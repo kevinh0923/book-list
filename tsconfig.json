@@ -5,6 +5,22 @@
     /* Visit https://aka.ms/tsconfig.json to read more about this file */
 
     /* Completeness */
-    "skipLibCheck": true                                 /* Skip type checking all .d.ts files. */
+    "skipLibCheck": true                                 /* Skip type checking all .d.ts files. */,
+    "jsx": "react-native",
+    "types": ["node"],
+    "paths": {
+      "@api/*": ["./src/api/*"],
+      "@api": ["./src/api/index.ts"],
+      "@components/*": ["./src/components/*"],
+      "@components": ["./src/components/index.ts"],
+      "@screens/*":["./src/screens/*"],
+      "@screens":["./src/screens/index.ts"],
+      "@navigation/*": ["./src/navigation/*"],
+      "@navigation": ["./src/navigation/index.ts"],
+      "@types/*": ["./src/types/*"],
+      "@types": ["./src/types/index.ts"],
+      "@settings/*": ["./src/settings/*"],
+      "@settings": ["./src/settings/index.ts"],
+    }
   }
 }

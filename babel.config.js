@@ -9,5 +9,20 @@ module.exports = {
         path: '.env',
       },
     ],
+    [
+      'module-resolver',
+      {
+        extensions: ['.js', '.jsx', '.ts', '.tsx'],
+        root: ['./'],
+        alias: {
+          '@api': ['./src/api'],
+          '@components': ['./src/components'],
+          '@screens': ['./src/screens'],
+          '@navigation': ['./src/navigation'],
+          '@types': ['./src/types'],
+          '@settings': ['./src/setting'],
+        },
+      },
+    ],
   ],
 };
