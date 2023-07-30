@@ -1,21 +1,22 @@
 import React, { memo } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { Pressable, Text, StyleSheet } from 'react-native';
 import Image from 'react-native-fast-image';
 
 import { Book } from '@types';
 
 type BookItemProps = {
   book: Book;
+  onSelect: () => void;
 };
 
-const BookItem: React.FC<BookItemProps> = ({ book }) => {
+const BookItem: React.FC<BookItemProps> = ({ book, onSelect }) => {
   const { coverImageUrl, name, rate, isFavourite } = book;
 
   return (
-    <View style={styles.container}>
+    <Pressable style={styles.container} onPress={onSelect}>
       <Image source={{ uri: coverImageUrl }} style={styles.image} />
       <Text>{name}</Text>
-    </View>
+    </Pressable>
   );
 };
 
