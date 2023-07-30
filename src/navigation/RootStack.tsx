@@ -8,7 +8,13 @@ const RootStack = createNativeStackNavigator<RootStackParamList>();
 
 export const RootNavigation = () => (
   <RootStack.Navigator initialRouteName="BookList">
-    <RootStack.Screen component={BookListScreen} name="BookList" />
+    <RootStack.Screen
+      component={BookListScreen}
+      name="BookList"
+      options={{
+        headerTitle: 'Book List',
+      }}
+    />
     <RootStack.Screen component={BookDetailScreen} name="BookDetail" />
   </RootStack.Navigator>
 );

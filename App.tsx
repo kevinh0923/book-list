@@ -14,7 +14,7 @@ import {
   NavigationContainer,
 } from '@react-navigation/native';
 
-import { SafeAreaView, StatusBar, useColorScheme } from 'react-native';
+import { StatusBar, useColorScheme } from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { Colors } from 'react-native/Libraries/NewAppScreen';
 
