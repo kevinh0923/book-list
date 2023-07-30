@@ -1,5 +1,5 @@
 import React, { useCallback } from 'react';
-import { View, Text, Pressable, FlatList } from 'react-native';
+import { View, Text, StyleSheet, FlatList } from 'react-native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 
 import { useGetBooksQuery } from '@api/book';
@@ -31,9 +31,21 @@ export const BookListScreen: React.FC<BookListProps> = ({ navigation }) => {
         data={books}
         renderItem={renderBookItem}
         ListEmptyComponent={EmptyBookList}
+        keyExtractor={item => item._id}
+        contentContainerStyle={styles.listContainerStyle}
+        ItemSeparatorComponent={() => <View style={styles.listItemSeparator} />}
       />
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  listContainerStyle: {
+    padding: 24,
+  },
+  listItemSeparator: {
+    marginVertical: 8,
+  },
+});
 
 export default BookListScreen;
