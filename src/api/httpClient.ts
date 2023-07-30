@@ -9,18 +9,14 @@ export const axiosInstance = axios.create({
   },
 });
 
-export const apiPut = <DataType, ResType>(path: string, data: DataType) => {
-  return axiosInstance.put<ResType>(path, data);
-};
+export const apiPut = <DataType, ResType>(path: string, data: DataType) =>
+  axiosInstance.put<ResType>(path, data).then(res => res.data);
 
-export const apiPost = <DataType, ResType>(path: string, data: DataType) => {
-  return axiosInstance.post<ResType>(path, data);
-};
+export const apiPost = <DataType, ResType>(path: string, data: DataType) =>
+  axiosInstance.post<ResType>(path, data).then(res => res.data);
 
-export const apiGet = <ResType>(path: string) => {
-  return axiosInstance.get<ResType>(path);
-};
+export const apiGet = <ResType>(path: string) =>
+  axiosInstance.get<ResType>(path).then(res => res.data);
 
-export const apiDelete = <ResType>(path: string) => {
-  return axiosInstance.delete<ResType>(path);
-};
+export const apiDelete = <ResType>(path: string) =>
+  axiosInstance.delete<ResType>(path).then(res => res.data);
