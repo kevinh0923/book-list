@@ -28,7 +28,7 @@ export const BookDetailScreen: React.FC<BookDetailProps> = ({
     }
   }, [book]);
 
-  const { mutate: createBook } = useCreateBookMutation();
+  const { mutate: createBook, isLoading: isCreating } = useCreateBookMutation();
   // const { mutate: updateBook } = useUpdateBookMutation();
 
   const setNavigationOptions = useCallback(() => {
@@ -42,19 +42,21 @@ export const BookDetailScreen: React.FC<BookDetailProps> = ({
   }, [setNavigationOptions]);
 
   const handleSubmit = (data: UpdateBookForm) => {
-    createBook(
-      {
-        ...data,
-        authors: data.authors.replaceAll(', ', ',').split(','),
-        isFavourite: isFavorite,
-        updatedAt: new Date().toLocaleString(),
-      },
-      {
-        onSuccess: () => {
-          navigation.push('BookList');
+    if (!bookId) {
+      createBook(
+        {
+          ...data,
+          authors: data.authors.replaceAll(', ', ',').split(','),
+          isFavourite: isFavorite,
+          updatedAt: new Date().toLocaleString(),
         },
-      },
-    );
+        {
+          onSuccess: () => {
+            navigation.push('BookList');
+          },
+        },
+      );
+    }
   };
 
   return (
@@ -69,7 +71,11 @@ export const BookDetailScreen: React.FC<BookDetailProps> = ({
         </>
       }>
       {book || !bookId ? (
-        <BookForm defaultValues={book} onSubmit={handleSubmit} />
+        <BookForm
+          defaultValues={book}
+          isProceeding={isCreating}
+          onSubmit={handleSubmit}
+        />
       ) : isLoading ? (
         <ActivityIndicator />
       ) : null}

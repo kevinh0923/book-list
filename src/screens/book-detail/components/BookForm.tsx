@@ -14,10 +14,12 @@ import { bookFormValues } from '../book.utils';
 type BookFormProps = {
   onSubmit: (data: UpdateBookForm) => void;
   defaultValues: Book | undefined;
+  isProceeding?: boolean;
 };
 
 export const BookForm: React.FC<BookFormProps> = ({
   defaultValues,
+  isProceeding,
   onSubmit,
 }) => {
   const form = useForm({
@@ -69,6 +71,7 @@ export const BookForm: React.FC<BookFormProps> = ({
 
       <View style={styles.actions}>
         <Button
+          busy={isProceeding}
           variant="primary"
           label={defaultValues ? 'Update' : 'Create'}
           onPress={form.handleSubmit(onSubmit)}
