@@ -1,4 +1,4 @@
-import { useQuery, useMutation } from '@tanstack/react-query';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { apiGet, apiPost, apiPut, apiDelete } from './httpClient';
 import type { Book, UpdateBookParams } from '../types/book';
 
@@ -37,12 +37,26 @@ export const useGetBookQuery = (bookId: string) =>
 
 export const useCreateBookMutation = () => useMutation(createBook);
 
-export const useUpdateBookMutation = () =>
-  useMutation(updateBook, {
-    onMutate(data) {
-      console.log('[data]', data);
+export const useUpdateBookMutation = () => {
+  const client = useQueryClient();
+
+  return useMutation(updateBook, {
+    onMutate({ bookId, payload }) {
+      const books = client.getQueryData<Book[]>(['books']);
+
+      const updatedBooks = books?.map(book =>
+        book._id === bookId
+          ? {
+              ...book,
+              ...payload,
+            }
+          : book,
+      );
+
+      client.setQueryData<Book[]>(['books'], updatedBooks);
     },
   });
+};
 
 export default {
   getBooks,
