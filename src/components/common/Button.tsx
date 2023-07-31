@@ -5,12 +5,14 @@ import {
   StyleSheet,
   StyleProp,
   ViewStyle,
+  ActivityIndicator,
 } from 'react-native';
 
 type ButtonProps = {
   label: JSX.Element | string;
   variant?: 'primary' | 'secondary';
   style?: StyleProp<ViewStyle>;
+  busy?: boolean;
   onPress: () => void;
 };
 
@@ -18,6 +20,7 @@ export const Button: React.FC<ButtonProps> = ({
   label,
   variant,
   style: exStyle,
+  busy,
   onPress,
 }) => {
   const btnStyle = useMemo(() => {
@@ -36,8 +39,12 @@ export const Button: React.FC<ButtonProps> = ({
   }, [variant, exStyle]);
 
   return (
-    <Pressable style={btnStyle} onPress={onPress}>
-      <Text style={styles.btnText}>{label}</Text>
+    <Pressable style={btnStyle} disabled={busy} onPress={onPress}>
+      {busy ? (
+        <ActivityIndicator size={20} />
+      ) : (
+        <Text style={styles.btnText}>{label}</Text>
+      )}
     </Pressable>
   );
 };
