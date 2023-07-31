@@ -10,17 +10,18 @@ import {
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import moment from 'moment';
 
-import { useGetBooksQuery } from '@api/book';
+import { useGetBooksQuery, useUpdateBookMutation } from '@api/book';
 import BookItem from '@components/BookItem';
 import { Screen } from '@components/common';
+import type { RootStackParamList, Book } from '@types';
 
 import { EmptyBookList } from './components/EmptyBookList';
-import type { RootStackParamList, Book } from '@types';
 
 type BookListProps = NativeStackScreenProps<RootStackParamList, 'BookList'>;
 
 export const BookListScreen: React.FC<BookListProps> = ({ navigation }) => {
   const { data: books, isLoading } = useGetBooksQuery();
+  const { mutate: updateBook } = useUpdateBookMutation();
 
   const handleSelectBook = useCallback(
     (bookId?: string) => () => {
@@ -29,11 +30,32 @@ export const BookListScreen: React.FC<BookListProps> = ({ navigation }) => {
     [navigation],
   );
 
+  const updateBookFavorite = useCallback(
+    (book: Book) => () => {
+      const { _id, ...rest } = book;
+
+      updateBook({
+        bookId: _id,
+        payload: {
+          ...rest,
+          isFavourite: !book.isFavourite,
+        },
+      });
+    },
+    [updateBook],
+  );
+
   const renderBookItem = useCallback(
     ({ item }: { item: Book }) => {
-      return <BookItem book={item} onSelect={handleSelectBook(item._id)} />;
+      return (
+        <BookItem
+          book={item}
+          onSelect={handleSelectBook(item._id)}
+          onUpdateFavorite={updateBookFavorite(item)}
+        />
+      );
     },
-    [handleSelectBook],
+    [handleSelectBook, updateBookFavorite],
   );
 
   // In production mode, there should be such functionalities;

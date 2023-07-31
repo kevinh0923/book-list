@@ -3,16 +3,21 @@ import { Pressable, View, Text, StyleSheet } from 'react-native';
 import Image from 'react-native-fast-image';
 
 import type { Book } from '@types';
+import { FavoriteButton } from '@components/FavoriteButton';
 
 import { Rate } from './common';
-import { Heart } from './icons';
 
 type BookItemProps = {
   book: Book;
   onSelect: () => void;
+  onUpdateFavorite?: () => void;
 };
 
-const BookItem: React.FC<BookItemProps> = ({ book, onSelect }) => {
+const BookItem: React.FC<BookItemProps> = ({
+  book,
+  onSelect,
+  onUpdateFavorite,
+}) => {
   const { coverImageUrl, name, rate, isFavourite } = book;
 
   return (
@@ -30,7 +35,11 @@ const BookItem: React.FC<BookItemProps> = ({ book, onSelect }) => {
             <Pressable onPress={onSelect}>
               <Text style={styles.editBtnText}>Edit</Text>
             </Pressable>
-            <Heart isFilled={isFavourite} />
+            <FavoriteButton
+              isFavorite={isFavourite}
+              size="S"
+              onPress={onUpdateFavorite}
+            />
           </View>
         </View>
       </View>

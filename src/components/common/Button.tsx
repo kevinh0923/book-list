@@ -13,7 +13,7 @@ type ButtonProps = {
   variant?: 'primary' | 'secondary';
   style?: StyleProp<ViewStyle>;
   busy?: boolean;
-  onPress: () => void;
+  onPress?: () => void;
 };
 
 export const Button: React.FC<ButtonProps> = ({
