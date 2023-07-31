@@ -21,7 +21,9 @@ const BookItem: React.FC<BookItemProps> = ({ book, onSelect }) => {
         <Image source={{ uri: coverImageUrl }} style={styles.image} />
         <View style={styles.bookInfo}>
           <View>
-            <Text>{name}</Text>
+            <Text style={styles.title} numberOfLines={1}>
+              {name}
+            </Text>
             <Rate rate={rate} />
           </View>
           <View style={styles.bookActions}>
@@ -73,6 +75,10 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 0.4,
     shadowRadius: 2,
+  },
+  title: {
+    fontSize: 20,
+    lineHeight: 24,
   },
 });
 
