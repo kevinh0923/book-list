@@ -10,9 +10,8 @@ type RatingFieldProps = {
 };
 
 export const RatingField: React.FC<RatingFieldProps> = ({ style }) => {
-  const [rate, setRate] = useState(1);
-
   const cxt = useFormContext();
+  const [rate, setRate] = useState(cxt.getValues('rate'));
 
   const error = useMemo(
     () =>
