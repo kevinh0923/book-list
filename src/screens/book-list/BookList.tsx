@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo } from 'react';
+import React from 'react';
 import {
   View,
   Text,
@@ -8,73 +8,37 @@ import {
   ActivityIndicator,
 } from 'react-native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import moment from 'moment';
 
-import { useGetBooksQuery, useUpdateBookMutation } from '@api/book';
 import BookItem from '@components/BookItem';
 import { Screen } from '@components/common';
 import type { RootStackParamList, Book } from '@types';
 import { COLORS } from '@theme/colors';
 
+import { useBookList } from './useBookList';
 import { EmptyBookList } from './components/EmptyBookList';
 
 type BookListProps = NativeStackScreenProps<RootStackParamList, 'BookList'>;
 
 export const BookListScreen: React.FC<BookListProps> = ({ navigation }) => {
-  const { data: books, isLoading } = useGetBooksQuery();
-  const { mutate: updateBook } = useUpdateBookMutation();
+  const { books, isLoading, openBook, toggleFavorite } =
+    useBookList(navigation);
 
-  const handleSelectBook = useCallback(
-    (bookId?: string) => () => {
-      navigation.push('BookDetail', { id: bookId });
-    },
-    [navigation],
-  );
-
-  const updateBookFavorite = useCallback(
-    (book: Book) => () => {
-      const { _id, ...rest } = book;
-
-      updateBook({
-        bookId: _id,
-        payload: {
-          ...rest,
-          isFavourite: !book.isFavourite,
-        },
-      });
-    },
-    [updateBook],
-  );
-
-  const renderBookItem = useCallback(
-    ({ item }: { item: Book }) => {
-      return (
-        <BookItem
-          book={item}
-          onSelect={handleSelectBook(item._id)}
-          onUpdateFavorite={updateBookFavorite(item)}
-        />
-      );
-    },
-    [handleSelectBook, updateBookFavorite],
-  );
-
-  // In production mode, there should be such functionalities;
-  // - Filter by name, author, published date, etc
-  // - Sort by published date, updated date, etc
-  const sortedBooks = useMemo(() => {
-    const result = [...(books ?? [])];
-    return result.sort((a, b) =>
-      moment(a.updatedAt).isBefore(moment(b.updatedAt)) ? 1 : -1,
+  const renderBookItem = ({ item }: { item: Book }) => {
+    return (
+      <BookItem
+        book={item}
+        onSelect={openBook(item._id)}
+        onUpdateFavorite={toggleFavorite(item)}
+      />
     );
-  }, [books]);
+  };
 
   return (
     <Screen
       header={
         <>
           <Text style={styles.title}>Books</Text>
-          <Pressable onPress={handleSelectBook()}>
+          <Pressable onPress={openBook()}>
             <Text style={styles.newBtnText}>New</Text>
           </Pressable>
         </>
@@ -83,9 +47,9 @@ export const BookListScreen: React.FC<BookListProps> = ({ navigation }) => {
         <ActivityIndicator />
       ) : (
         <FlatList<Book>
-          data={sortedBooks}
+          data={books}
           renderItem={renderBookItem}
-          ListEmptyComponent={<EmptyBookList onCreate={handleSelectBook()} />}
+          ListEmptyComponent={<EmptyBookList onCreate={openBook()} />}
           keyExtractor={item => item._id}
           contentContainerStyle={styles.listContainerStyle}
           ItemSeparatorComponent={() => (

@@ -99,6 +99,8 @@ If I have more time, I'd do more work for;
 
 I'd like to implement infinite scroll using `useInfiniteQuery` from `react-query` but I can't due to crudcrud.com/api limit.
 
+#### Accessibility for the form
+
 #### Error handling
 
 Better approach to handle API errors and show them in user friendly way like using ToastMessage.

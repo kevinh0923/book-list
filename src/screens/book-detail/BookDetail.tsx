@@ -1,18 +1,13 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { ActivityIndicator, StyleSheet, Text } from 'react-native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 
-import {
-  useCreateBookMutation,
-  useUpdateBookMutation,
-  useGetBookQuery,
-} from '@api/book';
 import { FavoriteButton } from '@components/FavoriteButton';
 import { Screen } from '@components/common';
 
-import { BookForm } from './components/BookForm';
-import { UpdateBookForm } from './book.utils';
 import type { RootStackParamList } from '../../types/navigation';
+import { BookForm } from './components/BookForm';
+import { useBookDetail } from './useBookDetail';
 
 type BookDetailProps = NativeStackScreenProps<RootStackParamList, 'BookDetail'>;
 
@@ -21,8 +16,10 @@ export const BookDetailScreen: React.FC<BookDetailProps> = ({
   route,
 }) => {
   const bookId = route.params?.id;
-
-  const { data: book, isLoading } = useGetBookQuery(bookId ?? '');
+  const { isLoading, submitBook, book, isProceeding } = useBookDetail({
+    navigation,
+    bookId,
+  });
 
   const [isFavorite, setIsFavorite] = useState(false);
 
@@ -32,50 +29,11 @@ export const BookDetailScreen: React.FC<BookDetailProps> = ({
     }
   }, [book]);
 
-  const { mutate: createBook, isLoading: isCreating } = useCreateBookMutation();
-  const { mutate: updateBook, isLoading: isUpdating } = useUpdateBookMutation();
-  const isProceeding = isCreating || isUpdating;
-
   useEffect(() => {
     navigation.setOptions({
       headerTitle: `${bookId ? 'Edit' : 'Create'} Book`,
     });
   }, [navigation, bookId]);
-
-  const handleSubmit = (data: UpdateBookForm) => {
-    if (!bookId) {
-      createBook(
-        {
-          ...data,
-          authors: data.authors.replaceAll(', ', ',').split(','),
-          isFavourite: isFavorite,
-          updatedAt: new Date().toLocaleString(),
-        },
-        {
-          onSuccess: () => {
-            navigation.push('BookList');
-          },
-        },
-      );
-    } else {
-      updateBook(
-        {
-          bookId,
-          payload: {
-            ...data,
-            authors: data.authors.replaceAll(', ', ',').split(','),
-            isFavourite: isFavorite,
-            updatedAt: new Date().toLocaleString(),
-          },
-        },
-        {
-          onSuccess: () => {
-            navigation.push('BookList');
-          },
-        },
-      );
-    }
-  };
 
   return (
     <Screen
@@ -92,7 +50,7 @@ export const BookDetailScreen: React.FC<BookDetailProps> = ({
         <BookForm
           defaultValues={book}
           isProceeding={isProceeding}
-          onSubmit={handleSubmit}
+          onSubmit={submitBook}
         />
       ) : isLoading ? (
         <ActivityIndicator />

@@ -12,6 +12,8 @@ export const getBook = (bookId: string) =>
 export const createBook = (payload: UpdateBookParams) =>
   apiPost<UpdateBookParams, Book>(BOOK_API_URI, payload);
 
+// In real world, it should support partial update, and type should be Partial<Omit<Book, '_id'>>
+// Crudcrud's PUT doesn't support that and it just overwrites w/ the param.
 export const updateBook = ({
   bookId,
   payload,
