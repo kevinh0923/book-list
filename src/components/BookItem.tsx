@@ -16,7 +16,7 @@ const BookItem: React.FC<BookItemProps> = ({ book, onSelect }) => {
   const { coverImageUrl, name, rate, isFavourite } = book;
 
   return (
-    <Pressable style={[styles.boxShadow]} onPress={onSelect}>
+    <Pressable style={styles.boxShadow} onPress={onSelect}>
       <View style={styles.container}>
         <Image source={{ uri: coverImageUrl }} style={styles.image} />
         <View style={styles.bookInfo}>
@@ -48,6 +48,7 @@ const styles = StyleSheet.create({
     height: 93,
   },
   bookInfo: {
+    flex: 1,
     paddingHorizontal: 12,
     paddingVertical: 10,
     justifyContent: 'space-between',
