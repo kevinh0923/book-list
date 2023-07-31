@@ -1,13 +1,12 @@
-import React, { useCallback, useEffect } from 'react';
-import { SafeAreaView } from 'react-native';
+import React, { useCallback, useEffect, useState } from 'react';
+import { ActivityIndicator, SafeAreaView } from 'react-native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
 
-import { useCreateBookMutation } from '@api/book';
+import { useCreateBookMutation, useGetBookQuery } from '@api/book';
+import { FavoriteButton } from '@components/FavoriteButton';
 
 import { BookForm } from './components/BookForm';
-import { bookFormValues, UpdateBookForm } from './book.utils';
+import { UpdateBookForm } from './book.utils';
 import type { RootStackParamList } from '../../types/navigation';
 
 type BookDetailProps = NativeStackScreenProps<RootStackParamList, 'BookDetail'>;
@@ -17,6 +16,8 @@ export const BookDetailScreen: React.FC<BookDetailProps> = ({
   route,
 }) => {
   const bookId = route.params?.id;
+
+  const { data: book, isLoading } = useGetBookQuery(bookId ?? '');
 
   const { mutate: createBook } = useCreateBookMutation();
 
@@ -30,25 +31,21 @@ export const BookDetailScreen: React.FC<BookDetailProps> = ({
     setNavigationOptions();
   }, [setNavigationOptions]);
 
-  const bookForm = useForm({
-    mode: 'onChange',
-    resolver: zodResolver(bookFormValues),
-    defaultValues: {
-      title: '',
-      description: '',
-      authors: '',
-      publishedAt: '',
-      rating: 1,
-    },
-  });
+  const handleSubmit = (data: UpdateBookForm) => {};
 
-  const handleSubmit = (data: UpdateBookForm) => {
-    console.log('[book data]', data);
-  };
+  const [isFavorite, setIsFavorite] = useState(false);
 
   return (
     <SafeAreaView>
-      <BookForm form={bookForm} onSubmit={handleSubmit} />
+      <FavoriteButton
+        isFavorite={isFavorite}
+        onPress={() => setIsFavorite(isFav => !isFav)}
+      />
+      {book || !bookId ? (
+        <BookForm defaultValues={book} onSubmit={handleSubmit} />
+      ) : isLoading ? (
+        <ActivityIndicator />
+      ) : null}
     </SafeAreaView>
   );
 };

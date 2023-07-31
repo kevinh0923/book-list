@@ -4,20 +4,31 @@ import type { Book, UpdateBookParams } from '../types/book';
 
 const BOOK_API_URI = '/books';
 
-export const getBooks = () => {
-  return apiGet<Book[]>(BOOK_API_URI);
-};
+export const getBooks = () => apiGet<Book[]>(BOOK_API_URI);
 
-export const createBook = (payload: UpdateBookParams) => {
-  return apiPost<UpdateBookParams, Book>(BOOK_API_URI, payload);
-};
+export const getBook = (bookId: string) =>
+  apiGet<Book>(`${BOOK_API_URI}/${bookId}`);
 
-export const updateBook = (payload: UpdateBookParams) => {};
+export const createBook = (payload: UpdateBookParams) =>
+  apiPost<UpdateBookParams, Book>(BOOK_API_URI, payload);
 
-export const deleteBook = (bookId: string) => {};
+export const updateBook = (bookId: string, payload: UpdateBookParams) =>
+  apiPut<UpdateBookParams, Book>(`${BOOK_API_URI}/${bookId}`, payload);
+
+export const deleteBook = (bookId: string) =>
+  apiDelete(`${BOOK_API_URI}/${bookId}`);
 
 export const useGetBooksQuery = () =>
   useQuery<Book[]>(['books'], (): Promise<Book[]> => getBooks());
+
+export const useGetBookQuery = (bookId: string) =>
+  useQuery<Book>(
+    ['book', { id: bookId }],
+    (): Promise<Book> => getBook(bookId),
+    {
+      enabled: !!bookId,
+    },
+  );
 
 export const useCreateBookMutation = () =>
   useMutation(createBook, {
@@ -31,4 +42,7 @@ export default {
   createBook,
   updateBook,
   deleteBook,
+  useGetBookQuery,
+  useGetBooksQuery,
+  useCreateBookMutation,
 };
