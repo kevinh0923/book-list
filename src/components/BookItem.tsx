@@ -22,13 +22,13 @@ const BookItem: React.FC<BookItemProps> = ({ book, onSelect }) => {
         <View style={styles.bookInfo}>
           <View>
             <Text>{name}</Text>
-            <Rate rate={3} />
+            <Rate rate={rate} />
           </View>
           <View style={styles.bookActions}>
             <Pressable onPress={onSelect}>
               <Text style={styles.editBtnText}>Edit</Text>
             </Pressable>
-            <Heart isFilled />
+            <Heart isFilled={isFavourite} />
           </View>
         </View>
       </View>
@@ -56,6 +56,7 @@ const styles = StyleSheet.create({
   bookActions: {
     flexDirection: 'row',
     justifyContent: 'space-between',
+    alignItems: 'center',
   },
   editBtnText: {
     color: '#002B56',

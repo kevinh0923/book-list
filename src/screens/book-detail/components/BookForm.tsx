@@ -44,6 +44,7 @@ export const BookForm: React.FC<BookFormProps> = ({
         </FormProvider>
 
         <Button
+          variant="primary"
           label={defaultValues ? 'Update' : 'Create'}
           onPress={form.handleSubmit(onSubmit)}
         />

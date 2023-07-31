@@ -1,9 +1,10 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { ActivityIndicator, SafeAreaView } from 'react-native';
+import { ActivityIndicator, StyleSheet, Text } from 'react-native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 
 import { useCreateBookMutation, useGetBookQuery } from '@api/book';
 import { FavoriteButton } from '@components/FavoriteButton';
+import { Screen } from '@components/common';
 
 import { BookForm } from './components/BookForm';
 import { UpdateBookForm } from './book.utils';
@@ -36,18 +37,30 @@ export const BookDetailScreen: React.FC<BookDetailProps> = ({
   const [isFavorite, setIsFavorite] = useState(false);
 
   return (
-    <SafeAreaView>
-      <FavoriteButton
-        isFavorite={isFavorite}
-        onPress={() => setIsFavorite(isFav => !isFav)}
-      />
+    <Screen
+      header={
+        <>
+          <Text style={styles.title}>Edit</Text>
+          <FavoriteButton
+            isFavorite={isFavorite}
+            onPress={() => setIsFavorite(isFav => !isFav)}
+          />
+        </>
+      }>
       {book || !bookId ? (
         <BookForm defaultValues={book} onSubmit={handleSubmit} />
       ) : isLoading ? (
         <ActivityIndicator />
       ) : null}
-    </SafeAreaView>
+    </Screen>
   );
 };
+
+const styles = StyleSheet.create({
+  title: {
+    fontSize: 32,
+    lineHeight: 38,
+  },
+});
 
 export default BookDetailScreen;

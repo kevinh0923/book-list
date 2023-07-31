@@ -4,6 +4,7 @@ import { NativeStackScreenProps } from '@react-navigation/native-stack';
 
 import { useGetBooksQuery } from '@api/book';
 import BookItem from '@components/BookItem';
+import { Screen } from '@components/common';
 
 import { EmptyBookList } from './components/EmptyBookList';
 import type { RootStackParamList, Book } from '@types';
@@ -20,16 +21,23 @@ export const BookListScreen: React.FC<BookListProps> = ({ navigation }) => {
     [navigation],
   );
 
-  const renderBookItem = ({ item }: { item: Book }) => {
-    return <BookItem book={item} onSelect={handleSelectBook(item._id)} />;
-  };
+  const renderBookItem = useCallback(
+    ({ item }: { item: Book }) => {
+      return <BookItem book={item} onSelect={handleSelectBook(item._id)} />;
+    },
+    [handleSelectBook],
+  );
 
   return (
-    <View>
-      <Text>Books</Text>
-      <Pressable onPress={handleSelectBook()}>
-        <Text>New</Text>
-      </Pressable>
+    <Screen
+      header={
+        <>
+          <Text style={styles.title}>Books</Text>
+          <Pressable onPress={handleSelectBook()}>
+            <Text style={styles.newBtnText}>New</Text>
+          </Pressable>
+        </>
+      }>
       <FlatList<Book>
         data={books}
         renderItem={renderBookItem}
@@ -38,13 +46,24 @@ export const BookListScreen: React.FC<BookListProps> = ({ navigation }) => {
         contentContainerStyle={styles.listContainerStyle}
         ItemSeparatorComponent={() => <View style={styles.listItemSeparator} />}
       />
-    </View>
+    </Screen>
   );
 };
 
 const styles = StyleSheet.create({
+  title: {
+    fontSize: 32,
+    lineHeight: 38,
+  },
+  newBtnText: {
+    color: '#002B56',
+    textDecorationStyle: 'solid',
+    textDecorationColor: '#002B56',
+    textDecorationLine: 'underline',
+  },
   listContainerStyle: {
-    padding: 24,
+    paddingVertical: 24,
+    paddingHorizontal: 4,
   },
   listItemSeparator: {
     marginVertical: 8,
