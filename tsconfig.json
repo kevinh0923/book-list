@@ -23,6 +23,8 @@
       "@types": ["./src/types/index.ts"],
       "@settings/*": ["./src/settings/*"],
       "@settings": ["./src/settings/index.ts"],
+      "@theme/*": ["./src/theme/*"],
+      "@theme": ["./src/theme/index.ts"]
     }
   }
 }

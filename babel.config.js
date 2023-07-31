@@ -22,6 +22,7 @@ module.exports = {
           '@navigation': ['./src/navigation'],
           '@types': ['./src/types'],
           '@settings': ['./src/setting'],
+          '@theme': ['./src/theme'],
         },
       },
     ],

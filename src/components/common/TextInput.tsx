@@ -5,7 +5,7 @@ import {
   TextInputProps as RNTextInputProps,
   StyleSheet,
 } from 'react-native';
-
+import { COLORS } from '@theme/colors';
 import { InputLabel } from './InputLabel';
 
 export type TextInputProps = RNTextInputProps & {
@@ -30,7 +30,7 @@ export const TextInput: React.FC<TextInputProps> = ({
 const styles = StyleSheet.create({
   input: {
     borderStyle: 'solid',
-    borderColor: '#D0D4D9',
+    borderColor: COLORS.gray100,
     borderWidth: 1,
     borderRadius: 12,
     paddingHorizontal: 4,

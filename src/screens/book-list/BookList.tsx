@@ -14,6 +14,7 @@ import { useGetBooksQuery, useUpdateBookMutation } from '@api/book';
 import BookItem from '@components/BookItem';
 import { Screen } from '@components/common';
 import type { RootStackParamList, Book } from '@types';
+import { COLORS } from '@theme/colors';
 
 import { EmptyBookList } from './components/EmptyBookList';
 
@@ -102,9 +103,9 @@ const styles = StyleSheet.create({
     lineHeight: 38,
   },
   newBtnText: {
-    color: '#002B56',
+    color: COLORS.blue,
     textDecorationStyle: 'solid',
-    textDecorationColor: '#002B56',
+    textDecorationColor: COLORS.blue,
     textDecorationLine: 'underline',
   },
   listContainerStyle: {

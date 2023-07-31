@@ -4,6 +4,7 @@ import Image from 'react-native-fast-image';
 
 import type { Book } from '@types';
 import { FavoriteButton } from '@components/FavoriteButton';
+import { COLORS } from '@theme/colors';
 
 import { Rate } from './common';
 
@@ -70,9 +71,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   editBtnText: {
-    color: '#002B56',
+    color: COLORS.blue,
     textDecorationStyle: 'solid',
-    textDecorationColor: '#002B56',
+    textDecorationColor: COLORS.blue,
     textDecorationLine: 'underline',
   },
   boxShadow: {

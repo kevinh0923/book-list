@@ -7,6 +7,7 @@ import {
   ViewStyle,
   ActivityIndicator,
 } from 'react-native';
+import { COLORS } from '@theme/colors';
 
 type ButtonProps = {
   label: JSX.Element | string;
@@ -65,7 +66,7 @@ const styles = StyleSheet.create({
   },
   container: {},
   primaryBtn: {
-    backgroundColor: '#002B56',
+    backgroundColor: COLORS.blue,
     borderRadius: 8,
   },
   btnText: {
