@@ -36,15 +36,11 @@ export const BookDetailScreen: React.FC<BookDetailProps> = ({
   const { mutate: updateBook, isLoading: isUpdating } = useUpdateBookMutation();
   const isProceeding = isCreating || isUpdating;
 
-  const setNavigationOptions = useCallback(() => {
+  useEffect(() => {
     navigation.setOptions({
       headerTitle: `${bookId ? 'Edit' : 'Create'} Book`,
     });
   }, [navigation, bookId]);
-
-  useEffect(() => {
-    setNavigationOptions();
-  }, [setNavigationOptions]);
 
   const handleSubmit = (data: UpdateBookForm) => {
     if (!bookId) {
