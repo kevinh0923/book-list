@@ -1,5 +1,9 @@
 # Book List App
 
+## Demo Video
+
+https://www.loom.com/share/36456813d0b744e89590e545e75d34ce
+
 ## Prerequisites
 
 - [Node.js v18.11.x+](https://nodejs.org) and npm (Recommended: Use [nvm](https://github.com/nvm-sh/nvm))
