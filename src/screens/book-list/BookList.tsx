@@ -85,7 +85,7 @@ export const BookListScreen: React.FC<BookListProps> = ({ navigation }) => {
         <FlatList<Book>
           data={sortedBooks}
           renderItem={renderBookItem}
-          ListEmptyComponent={EmptyBookList}
+          ListEmptyComponent={<EmptyBookList onCreate={handleSelectBook()} />}
           keyExtractor={item => item._id}
           contentContainerStyle={styles.listContainerStyle}
           ItemSeparatorComponent={() => (
