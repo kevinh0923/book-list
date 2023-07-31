@@ -1,6 +1,14 @@
-import React, { useCallback } from 'react';
-import { View, Text, StyleSheet, FlatList, Pressable } from 'react-native';
+import React, { useCallback, useMemo } from 'react';
+import {
+  View,
+  Text,
+  StyleSheet,
+  FlatList,
+  Pressable,
+  ActivityIndicator,
+} from 'react-native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import moment from 'moment';
 
 import { useGetBooksQuery } from '@api/book';
 import BookItem from '@components/BookItem';
@@ -28,6 +36,16 @@ export const BookListScreen: React.FC<BookListProps> = ({ navigation }) => {
     [handleSelectBook],
   );
 
+  // In production mode, there should be such functionalities;
+  // - Filter by name, author, published date, etc
+  // - Sort by published date, updated date, etc
+  const sortedBooks = useMemo(() => {
+    const result = [...(books ?? [])];
+    return result.sort((a, b) =>
+      moment(a.updatedAt).isBefore(moment(b.updatedAt)) ? 1 : -1,
+    );
+  }, [books]);
+
   return (
     <Screen
       header={
@@ -38,14 +56,20 @@ export const BookListScreen: React.FC<BookListProps> = ({ navigation }) => {
           </Pressable>
         </>
       }>
-      <FlatList<Book>
-        data={books}
-        renderItem={renderBookItem}
-        ListEmptyComponent={EmptyBookList}
-        keyExtractor={item => item._id}
-        contentContainerStyle={styles.listContainerStyle}
-        ItemSeparatorComponent={() => <View style={styles.listItemSeparator} />}
-      />
+      {isLoading ? (
+        <ActivityIndicator />
+      ) : (
+        <FlatList<Book>
+          data={sortedBooks}
+          renderItem={renderBookItem}
+          ListEmptyComponent={EmptyBookList}
+          keyExtractor={item => item._id}
+          contentContainerStyle={styles.listContainerStyle}
+          ItemSeparatorComponent={() => (
+            <View style={styles.listItemSeparator} />
+          )}
+        />
+      )}
     </Screen>
   );
 };
