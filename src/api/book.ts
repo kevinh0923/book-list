@@ -12,8 +12,13 @@ export const getBook = (bookId: string) =>
 export const createBook = (payload: UpdateBookParams) =>
   apiPost<UpdateBookParams, Book>(BOOK_API_URI, payload);
 
-export const updateBook = (bookId: string, payload: UpdateBookParams) =>
-  apiPut<UpdateBookParams, Book>(`${BOOK_API_URI}/${bookId}`, payload);
+export const updateBook = ({
+  bookId,
+  payload,
+}: {
+  bookId: string;
+  payload: UpdateBookParams;
+}) => apiPut<UpdateBookParams, Book>(`${BOOK_API_URI}/${bookId}`, payload);
 
 export const deleteBook = (bookId: string) =>
   apiDelete(`${BOOK_API_URI}/${bookId}`);
@@ -30,10 +35,12 @@ export const useGetBookQuery = (bookId: string) =>
     },
   );
 
-export const useCreateBookMutation = () =>
-  useMutation(createBook, {
+export const useCreateBookMutation = () => useMutation(createBook);
+
+export const useUpdateBookMutation = () =>
+  useMutation(updateBook, {
     onMutate(data) {
-      console.log('[create mutate data]', data);
+      console.log('[data]', data);
     },
   });
 
@@ -45,4 +52,5 @@ export default {
   useGetBookQuery,
   useGetBooksQuery,
   useCreateBookMutation,
+  useUpdateBookMutation,
 };

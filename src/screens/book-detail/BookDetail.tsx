@@ -2,7 +2,11 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { ActivityIndicator, StyleSheet, Text } from 'react-native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 
-import { useCreateBookMutation, useGetBookQuery } from '@api/book';
+import {
+  useCreateBookMutation,
+  useUpdateBookMutation,
+  useGetBookQuery,
+} from '@api/book';
 import { FavoriteButton } from '@components/FavoriteButton';
 import { Screen } from '@components/common';
 
@@ -29,7 +33,8 @@ export const BookDetailScreen: React.FC<BookDetailProps> = ({
   }, [book]);
 
   const { mutate: createBook, isLoading: isCreating } = useCreateBookMutation();
-  // const { mutate: updateBook } = useUpdateBookMutation();
+  const { mutate: updateBook, isLoading: isUpdating } = useUpdateBookMutation();
+  const isProceeding = isCreating || isUpdating;
 
   const setNavigationOptions = useCallback(() => {
     navigation.setOptions({
@@ -56,6 +61,23 @@ export const BookDetailScreen: React.FC<BookDetailProps> = ({
           },
         },
       );
+    } else {
+      updateBook(
+        {
+          bookId,
+          payload: {
+            ...data,
+            authors: data.authors.replaceAll(', ', ',').split(','),
+            isFavourite: isFavorite,
+            updatedAt: new Date().toLocaleString(),
+          },
+        },
+        {
+          onSuccess: () => {
+            navigation.push('BookList');
+          },
+        },
+      );
     }
   };
 
@@ -73,7 +95,7 @@ export const BookDetailScreen: React.FC<BookDetailProps> = ({
       {book || !bookId ? (
         <BookForm
           defaultValues={book}
-          isProceeding={isCreating}
+          isProceeding={isProceeding}
           onSubmit={handleSubmit}
         />
       ) : isLoading ? (
