@@ -10,7 +10,11 @@ export const Error: React.FC<ErrorProps> = ({ error }) => (
 );
 
 const styles = StyleSheet.create({
-  error: {},
+  error: {
+    color: 'red',
+    fontSize: 10,
+    padding: 4,
+  },
 });
 
 export default Error;
