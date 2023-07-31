@@ -45,7 +45,12 @@ export const BookForm: React.FC<BookFormProps> = ({
             label="Description"
             name="description"
           />
-          <InputField style={styles.formField} label="Authors" name="authors" />
+          <InputField
+            style={styles.formField}
+            label="Authors"
+            name="authors"
+            hint="Separate names by comma. e.g. John Doe, Kevin He"
+          />
           <InputField
             style={styles.formField}
             label="Publish Date"
