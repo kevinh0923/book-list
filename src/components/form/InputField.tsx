@@ -58,11 +58,11 @@ export const InputField: React.FC<InputFieldProps> = ({
   );
 };
 
-const styles = {
+const styles = StyleSheet.create({
   hint: {
     fontSize: 10,
     padding: 4,
   },
-};
+});
 
 export default InputField;

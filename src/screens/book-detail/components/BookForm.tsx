@@ -41,6 +41,7 @@ export const BookForm: React.FC<BookFormProps> = ({
         <View style={styles.formContainer}>
           <InputField style={styles.formField} label="Title" name="name" />
           <InputField
+            multiline
             style={styles.formField}
             label="Description"
             name="description"
@@ -55,6 +56,7 @@ export const BookForm: React.FC<BookFormProps> = ({
             style={styles.formField}
             label="Publish Date"
             name="publishedAt"
+            hint="YYYY-MM-DD"
           />
           <InputField
             style={styles.formField}

@@ -19,7 +19,10 @@ export const TextInput: React.FC<TextInputProps> = ({
   return (
     <View>
       <InputLabel label={label} />
-      <RNTextInput {...inputProps} style={styles.input} />
+      <RNTextInput
+        {...inputProps}
+        style={[styles.input, inputProps.multiline ? styles.textarea : {}]}
+      />
     </View>
   );
 };
@@ -32,6 +35,9 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     paddingHorizontal: 4,
     paddingVertical: 8,
+  },
+  textarea: {
+    height: 75,
   },
 });
 
