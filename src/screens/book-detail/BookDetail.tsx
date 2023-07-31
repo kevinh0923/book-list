@@ -1,10 +1,13 @@
 import React, { useCallback, useEffect } from 'react';
-import { View, Text, Pressable } from 'react-native';
+import { SafeAreaView } from 'react-native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
 
 import { useCreateBookMutation } from '@api/book';
 
-import { InputField } from '../../components/common';
+import { BookForm } from './components/BookForm';
+import { bookFormValues, UpdateBookForm } from './book.utils';
 import type { RootStackParamList } from '../../types/navigation';
 
 type BookDetailProps = NativeStackScreenProps<RootStackParamList, 'BookDetail'>;
@@ -27,28 +30,26 @@ export const BookDetailScreen: React.FC<BookDetailProps> = ({
     setNavigationOptions();
   }, [setNavigationOptions]);
 
-  const handleSubmit = () => {
-    createBook({
-      name: 'History of humankind',
-      authors: ['Yuval Noah Harari'],
-      description: 'Deeply insightful exploration of human history',
-      publishedAt: '20-06-2011',
-      updatedAt: '20-06-2023',
-      isFavourite: true,
-      coverImageUrl: 'https://gcdnb.pbrd.co/images/Rm0iWVYM9poc.jpg?o=1',
-      rate: 3,
-    });
+  const bookForm = useForm({
+    mode: 'onChange',
+    resolver: zodResolver(bookFormValues),
+    defaultValues: {
+      title: '',
+      description: '',
+      authors: '',
+      publishedAt: '',
+      rating: 1,
+    },
+  });
+
+  const handleSubmit = (data: UpdateBookForm) => {
+    console.log('[book data]', data);
   };
 
   return (
-    <View>
-      <Text>{bookId ? 'Edit Book' : 'Create Book'}</Text>
-      <Text>Book Id: {bookId}</Text>
-      <InputField value="" label="Title" onChange={() => {}} />
-      <Pressable onPress={handleSubmit}>
-        <Text>Create</Text>
-      </Pressable>
-    </View>
+    <SafeAreaView>
+      <BookForm form={bookForm} onSubmit={handleSubmit} />
+    </SafeAreaView>
   );
 };
 
