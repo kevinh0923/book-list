@@ -1,5 +1,5 @@
 import React, { useCallback } from 'react';
-import { View, Text, StyleSheet, FlatList } from 'react-native';
+import { View, Text, StyleSheet, FlatList, Pressable } from 'react-native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 
 import { useGetBooksQuery } from '@api/book';
@@ -14,7 +14,7 @@ export const BookListScreen: React.FC<BookListProps> = ({ navigation }) => {
   const { data: books, isLoading } = useGetBooksQuery();
 
   const handleSelectBook = useCallback(
-    (bookId: string) => () => {
+    (bookId?: string) => () => {
       navigation.push('BookDetail', { id: bookId });
     },
     [navigation],
@@ -27,6 +27,9 @@ export const BookListScreen: React.FC<BookListProps> = ({ navigation }) => {
   return (
     <View>
       <Text>Books</Text>
+      <Pressable onPress={handleSelectBook()}>
+        <Text>New</Text>
+      </Pressable>
       <FlatList<Book>
         data={books}
         renderItem={renderBookItem}

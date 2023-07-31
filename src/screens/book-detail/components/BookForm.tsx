@@ -24,11 +24,11 @@ export const BookForm: React.FC<BookFormProps> = ({
     mode: 'onChange',
     resolver: zodResolver(bookFormValues),
     defaultValues: {
-      title: defaultValues?.name,
-      description: defaultValues?.description,
+      title: defaultValues?.name ?? '',
+      description: defaultValues?.description ?? '',
       authors: (defaultValues?.authors ?? []).join(','),
-      publishedAt: defaultValues?.publishedAt,
-      rating: defaultValues?.rate,
+      publishedAt: defaultValues?.publishedAt ?? '',
+      rating: defaultValues?.rate ?? 1,
     },
   });
 
@@ -43,7 +43,10 @@ export const BookForm: React.FC<BookFormProps> = ({
           <RatingField />
         </FormProvider>
 
-        <Button label="Update" onPress={form.handleSubmit(onSubmit)} />
+        <Button
+          label={defaultValues ? 'Update' : 'Create'}
+          onPress={form.handleSubmit(onSubmit)}
+        />
       </View>
     </KeyboardAwareScrollView>
   );
