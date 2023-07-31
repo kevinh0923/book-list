@@ -1,10 +1,15 @@
 import React, { useMemo, useState, useCallback } from 'react';
 import { useFormContext } from 'react-hook-form';
+import { StyleProp, ViewStyle, View } from 'react-native';
 
 import { Rate, InputLabel } from '../common';
 import Error from './Error';
 
-export const RatingField: React.FC = () => {
+type RatingFieldProps = {
+  style?: StyleProp<ViewStyle>;
+};
+
+export const RatingField: React.FC<RatingFieldProps> = ({ style }) => {
   const [rate, setRate] = useState(1);
 
   const cxt = useFormContext();
@@ -21,7 +26,7 @@ export const RatingField: React.FC = () => {
     (value: number) => {
       setRate(value);
       if (cxt) {
-        cxt.setValue('rating', value);
+        cxt.setValue('rate', value);
       }
     },
     [cxt],
@@ -32,10 +37,10 @@ export const RatingField: React.FC = () => {
   }
 
   return (
-    <>
+    <View style={style}>
       <InputLabel label="Rating" />
       <Rate editable size="L" rate={rate} onChange={handleSetRate} />
       {error ? <Error error={error} /> : null}
-    </>
+    </View>
   );
 };

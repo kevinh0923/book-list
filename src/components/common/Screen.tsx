@@ -1,5 +1,5 @@
 import React, { PropsWithChildren } from 'react';
-import { StyleSheet, View, SafeAreaView, Text } from 'react-native';
+import { StyleSheet, View, SafeAreaView } from 'react-native';
 
 type ScreenProps = PropsWithChildren<{
   header?: JSX.Element;
@@ -17,7 +17,7 @@ export const Screen: React.FC<ScreenProps> = ({ header, children }) => (
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 24,
+    padding: 20,
     backgroundColor: 'white',
   },
   header: {
@@ -26,7 +26,9 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
   },
-  content: {},
+  content: {
+    flex: 1,
+  },
 });
 
 export default Screen;

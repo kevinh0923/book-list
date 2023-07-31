@@ -1,15 +1,27 @@
 import React, { useMemo } from 'react';
-import { Pressable, Text, StyleSheet } from 'react-native';
+import {
+  Pressable,
+  Text,
+  StyleSheet,
+  StyleProp,
+  ViewStyle,
+} from 'react-native';
 
 type ButtonProps = {
   label: JSX.Element | string;
   variant?: 'primary' | 'secondary';
+  style?: StyleProp<ViewStyle>;
   onPress: () => void;
 };
 
-export const Button: React.FC<ButtonProps> = ({ label, variant, onPress }) => {
+export const Button: React.FC<ButtonProps> = ({
+  label,
+  variant,
+  style: exStyle,
+  onPress,
+}) => {
   const btnStyle = useMemo(() => {
-    const style: any[] = [styles.button, styles.boxShadow];
+    const style: any[] = [styles.button, styles.boxShadow, exStyle];
 
     switch (variant) {
       case 'primary': {
@@ -21,7 +33,7 @@ export const Button: React.FC<ButtonProps> = ({ label, variant, onPress }) => {
     }
 
     return style;
-  }, [variant]);
+  }, [variant, exStyle]);
 
   return (
     <Pressable style={btnStyle} onPress={onPress}>

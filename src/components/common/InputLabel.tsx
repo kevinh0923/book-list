@@ -11,7 +11,10 @@ export const InputLabel: React.FC<InputLabelProps> = ({ label }) => (
 
 const styles = StyleSheet.create({
   label: {
-    fontWeight: '500',
+    fontWeight: '700',
+    fontSize: 10,
+    lineHeight: 12,
+    padding: 4,
   },
 });
 

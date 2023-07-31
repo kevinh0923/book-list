@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react';
-import { View } from 'react-native';
+import { View, StyleProp, ViewStyle } from 'react-native';
 import {
   useController,
   UseControllerProps,
@@ -12,6 +12,7 @@ import { Error } from './Error';
 type InputFieldProps = TextInputProps &
   UseControllerProps & {
     defaultValue?: string;
+    style?: StyleProp<ViewStyle>;
   };
 
 export const InputField: React.FC<InputFieldProps> = ({
@@ -19,6 +20,7 @@ export const InputField: React.FC<InputFieldProps> = ({
   label,
   rules,
   defaultValue,
+  style,
   ...inputProps
 }) => {
   const cxt = useFormContext();
@@ -37,7 +39,7 @@ export const InputField: React.FC<InputFieldProps> = ({
   }
 
   return (
-    <View>
+    <View style={style}>
       <TextInput
         label={label}
         onBlur={field.onBlur}

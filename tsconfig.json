@@ -8,6 +8,7 @@
     "skipLibCheck": true                                 /* Skip type checking all .d.ts files. */,
     "jsx": "react-native",
     "types": ["node"],
+    "lib": ["ES2021"],
     "paths": {
       "@assets/*": ["./assets"],
       "@api/*": ["./src/api/*"],

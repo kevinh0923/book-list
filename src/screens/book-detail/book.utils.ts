@@ -17,7 +17,7 @@ const refineMessage = {
   message: 'Invalid publish date',
 };
 
-const title = z
+const name = z
   .string({
     required_error: 'Title is required',
     invalid_type_error: 'Title must be a string',
@@ -45,15 +45,23 @@ const publishedAt = z
   })
   .min(1, 'Title is required');
 
-const rating = z.number();
+const coverImageUrl = z
+  .string({
+    required_error: 'Cover image URL is required',
+    invalid_type_error: 'Cover image URL must be a string',
+  })
+  .min(1, 'Title is required');
+
+const rate = z.number();
 
 export const bookFormValues = z
   .object({
-    title,
+    name,
     description,
     authors,
     publishedAt,
-    rating,
+    coverImageUrl,
+    rate,
   })
   .refine(refineFormValues, refineMessage);
 
