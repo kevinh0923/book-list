@@ -20,7 +20,16 @@ export const BookDetailScreen: React.FC<BookDetailProps> = ({
 
   const { data: book, isLoading } = useGetBookQuery(bookId ?? '');
 
+  const [isFavorite, setIsFavorite] = useState(false);
+
+  useEffect(() => {
+    if (book) {
+      setIsFavorite(book.isFavourite);
+    }
+  }, [book]);
+
   const { mutate: createBook } = useCreateBookMutation();
+  // const { mutate: updateBook } = useUpdateBookMutation();
 
   const setNavigationOptions = useCallback(() => {
     navigation.setOptions({
@@ -32,15 +41,27 @@ export const BookDetailScreen: React.FC<BookDetailProps> = ({
     setNavigationOptions();
   }, [setNavigationOptions]);
 
-  const handleSubmit = (data: UpdateBookForm) => {};
-
-  const [isFavorite, setIsFavorite] = useState(false);
+  const handleSubmit = (data: UpdateBookForm) => {
+    createBook(
+      {
+        ...data,
+        authors: data.authors.replaceAll(', ', ',').split(','),
+        isFavourite: isFavorite,
+        updatedAt: new Date().toLocaleString(),
+      },
+      {
+        onSuccess: () => {
+          navigation.push('BookList');
+        },
+      },
+    );
+  };
 
   return (
     <Screen
       header={
         <>
-          <Text style={styles.title}>Edit</Text>
+          <Text style={styles.title}>{bookId ? 'Edit ' : 'Create '}Book</Text>
           <FavoriteButton
             isFavorite={isFavorite}
             onPress={() => setIsFavorite(isFav => !isFav)}
