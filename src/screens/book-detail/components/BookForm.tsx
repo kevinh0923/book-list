@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { useRef, useEffect } from 'react';
 import { FormProvider } from 'react-hook-form';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, Keyboard, TextInput } from 'react-native';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 
@@ -22,6 +22,18 @@ export const BookForm: React.FC<BookFormProps> = ({
   isProceeding,
   onSubmit,
 }) => {
+  const nameRef = useRef<TextInput>(null);
+  const descriptionRef = useRef<TextInput>(null);
+  const authorsRef = useRef<TextInput>(null);
+  const publishedAtRef = useRef<TextInput>(null);
+  const coverImageUrlRef = useRef<TextInput>(null);
+
+  useEffect(() => {
+    if (!defaultValues) {
+      nameRef?.current?.focus(); // Auto-focus name field if it's create form.
+    }
+  }, [defaultValues]);
+
   const form = useForm({
     mode: 'onChange',
     resolver: zodResolver(bookFormValues),
@@ -35,35 +47,60 @@ export const BookForm: React.FC<BookFormProps> = ({
     },
   });
 
+  const handleSubmitEditing = (ref?: React.RefObject<TextInput>) => () => {
+    if (ref) {
+      ref.current?.focus();
+    } else {
+      // On the last element, just dismiss keyboard instead of submitting for selecting rate
+      Keyboard.dismiss();
+    }
+  };
+
   return (
     <KeyboardAwareScrollView
       contentContainerStyle={styles.container}
       keyboardShouldPersistTaps="handled">
       <FormProvider {...form}>
         <View style={styles.formContainer}>
-          <InputField style={styles.formField} label="Title" name="name" />
+          <InputField
+            ref={nameRef}
+            style={styles.formField}
+            label="Title"
+            name="name"
+            onSubmitEditing={handleSubmitEditing(descriptionRef)}
+            blurOnSubmit={false}
+          />
           <InputField
             multiline
+            ref={descriptionRef}
             style={styles.formField}
             label="Description"
             name="description"
+            onSubmitEditing={handleSubmitEditing(authorsRef)}
+            blurOnSubmit={false}
           />
           <InputField
             style={styles.formField}
+            ref={authorsRef}
             label="Authors"
             name="authors"
             hint="Separate names by comma. e.g. John Doe, Kevin He"
+            onSubmitEditing={handleSubmitEditing(publishedAtRef)}
           />
           <InputField
+            ref={publishedAtRef}
             style={styles.formField}
             label="Publish Date"
             name="publishedAt"
             hint="YYYY-MM-DD"
+            onSubmitEditing={handleSubmitEditing(coverImageUrlRef)}
           />
           <InputField
+            ref={coverImageUrlRef}
             style={styles.formField}
             label="Cover Image URL"
             name="coverImageUrl"
+            onSubmitEditing={handleSubmitEditing()}
           />
           <RatingField style={styles.formField} />
         </View>

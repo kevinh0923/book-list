@@ -2,7 +2,7 @@
 
 ## Demo Video
 
-https://www.loom.com/share/36456813d0b744e89590e545e75d34ce
+https://www.loom.com/share/c6dfc7fbcb43440d8b1a4abf6b515ce7
 
 ## Prerequisites
 
@@ -131,6 +131,7 @@ Unit test using `jest`, `react-testing-library` and integration test using `deto
 - Instead of having "Edit" button on the book item, it can be hidden and be shown when user swipes the item.
   When user swipes the book item, it can show extra actions items like Edit (Better to use pencil icon).
 - Design for empty list state, loading state.
+- Skeleton UI for list loading state.
 
 #### Book Detail (Edit Book)
 

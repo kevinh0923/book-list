@@ -12,20 +12,20 @@ export type TextInputProps = RNTextInputProps & {
   label: string;
 };
 
-export const TextInput: React.FC<TextInputProps> = ({
-  label,
-  ...inputProps
-}) => {
-  return (
-    <View>
-      <InputLabel label={label} />
-      <RNTextInput
-        {...inputProps}
-        style={[styles.input, inputProps.multiline ? styles.textarea : {}]}
-      />
-    </View>
-  );
-};
+export const TextInput = React.forwardRef(
+  ({ label, ...inputProps }: TextInputProps, ref: React.Ref<RNTextInput>) => {
+    return (
+      <View>
+        <InputLabel label={label} />
+        <RNTextInput
+          {...inputProps}
+          ref={ref}
+          style={[styles.input, inputProps.multiline ? styles.textarea : {}]}
+        />
+      </View>
+    );
+  },
+);
 
 const styles = StyleSheet.create({
   input: {

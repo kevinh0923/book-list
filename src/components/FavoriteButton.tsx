@@ -20,6 +20,12 @@ export const FavoriteButton: React.FC<FavoriteButtonProps> = ({
   <Button
     style={styles.button}
     label={<Heart isFilled={isFavorite} size={size} />}
+    hitSlop={{
+      bottom: 12,
+      right: 12,
+      left: 12,
+      top: 12,
+    }}
     onPress={onPress}
   />
 );
