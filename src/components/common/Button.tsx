@@ -1,6 +1,7 @@
 import React, { useMemo } from 'react';
 import {
   Pressable,
+  PressableProps,
   Text,
   StyleSheet,
   StyleProp,
@@ -9,12 +10,10 @@ import {
 } from 'react-native';
 import { COLORS } from '@theme/colors';
 
-type ButtonProps = {
+type ButtonProps = PressableProps & {
   label: JSX.Element | string;
   variant?: 'primary' | 'secondary';
-  style?: StyleProp<ViewStyle>;
   busy?: boolean;
-  onPress?: () => void;
 };
 
 export const Button: React.FC<ButtonProps> = ({
@@ -22,10 +21,14 @@ export const Button: React.FC<ButtonProps> = ({
   variant,
   style: exStyle,
   busy,
-  onPress,
+  ...restProps
 }) => {
   const btnStyle = useMemo(() => {
-    const style: any[] = [styles.button, styles.boxShadow, exStyle];
+    const style: StyleProp<ViewStyle> = [
+      styles.button,
+      styles.boxShadow,
+      exStyle as StyleProp<ViewStyle>,
+    ];
 
     switch (variant) {
       case 'primary': {
@@ -40,7 +43,7 @@ export const Button: React.FC<ButtonProps> = ({
   }, [variant, exStyle]);
 
   return (
-    <Pressable style={btnStyle} disabled={busy} onPress={onPress}>
+    <Pressable style={btnStyle} disabled={busy} {...restProps}>
       {busy ? (
         <ActivityIndicator size={20} />
       ) : (
